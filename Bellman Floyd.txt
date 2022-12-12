@@ -1,0 +1,161 @@
+// Bellman ford algorithm
+
+import java.util.ArrayList;
+
+class Solution {
+  public int[] bellman(int n, ArrayList<ArrayList<Pair>> adj) {
+    int dist[] = new int[n];
+    for (int i = 1; i < dist.length; i++) {
+      dist[i] = Integer.MAX_VALUE;
+    }
+    for (int i = 0; i < n - 1; i++) {
+      for (int j = 0; j < n; j++) {
+        for (Pair it : adj.get(j)) {
+          int u = it.start;
+          int v = it.end;
+          int wt = it.weight;
+
+          if (dist[u] + wt < dist[v] && dist[u] != Integer.MAX_VALUE) {
+            dist[v] = dist[u] + wt;
+          }
+
+        }
+      }
+
+    }
+
+    for (int j = 0; j < n; j++) {
+      for (Pair it : adj.get(j)) {
+        int u = it.start;
+        int v = it.end;
+        int wt = it.weight;
+
+        if (dist[u] + wt < dist[v] && dist[u] != Integer.MAX_VALUE) {
+          int temp[] = new int[1];
+          temp[0] = -1;
+
+          return temp;
+        }
+
+      }
+    }
+
+    return dist;
+  }
+}
+
+class Pair {
+  int start;
+  int end;
+  int weight;
+
+  Pair(int start, int end, int weight) {
+    this.start = start;
+    this.end = end;
+    this.weight = weight;
+  }
+}
+
+public class BellmanFord {
+  public static void main(String[] args) {
+    int n = 6;
+    ArrayList<ArrayList<Pair>> adj = new ArrayList<ArrayList<Pair>>();
+
+    for (int i = 0; i < n; i++) {
+      adj.add(new ArrayList<Pair>());
+
+    }
+
+    adj.get(0).add(new Pair(0, 1, 5));
+    adj.get(1).add(new Pair(1, 2, -2));
+    adj.get(1).add(new Pair(1, 5, -3));
+    adj.get(2).add(new Pair(2, 4, 3));
+    adj.get(5).add(new Pair(5, 3, 1));
+    adj.get(3).add(new Pair(3, 4, -2));
+    adj.get(3).add(new Pair(3, 2, 6));
+
+    Solution obj = new Solution();
+    int array[] = obj.bellman(n, adj);
+    for (int i = 0; i < array.length; i++) {
+      System.out.print(array[i] + " ");
+    }
+
+  }
+}
+
+
+
+
+
+
+//Floud Warshall ALgorithm
+import java.util.*;
+
+class Solution {
+  public void floyd(int adj[][], int n) {
+    for (int i = 0; i < n; i++) {
+      for (int j = 0; j < n; j++) {
+        if (adj[i][j] == -1) {
+          adj[i][j] = Integer.MAX_VALUE;
+
+        }
+        if (i == j) {
+          adj[i][j] = 0;
+        }
+      }
+    }
+    System.out.println();
+    for (int k = 0; k < n; k++) {
+      for (int i = 0; i < n; i++) {
+        for (int j = 0; j < n; j++) {
+          adj[i][j] = Math.min(adj[i][j], adj[i][k] + adj[k][j]);
+        }
+      }
+    }
+
+    for (int i = 0; i < n; i++) {
+      for (int j = 0; j < n; j++) {
+        if (adj[i][j] == Integer.MAX_VALUE) {
+          adj[i][j] = -1;
+        }
+      }
+    }
+
+  }
+}
+
+public class FloydWarshall {
+  public static void main(String[] args) {
+    int n = 4;
+    int adj[][] = new int[n][n];
+    Scanner sc = new Scanner(System.in);
+
+    for (int i = 0; i < adj.length; i++) {
+      for (int j = 0; j < adj.length; j++) {
+        adj[i][j] = sc.nextInt();
+      }
+    }
+
+    Solution obj = new Solution();
+    obj.floyd(adj, n);
+    for (int i = 0; i < adj.length; i++) {
+      for (int j = 0; j < adj.length; j++) {
+        System.out.print(adj[i][j] + " ");
+      }
+      System.out.println();
+    }
+
+  }
+}
+/*
+ * 0 2 5 6
+ * 2 0 -1 3
+ * 5 -1 0 4
+ * 6 3 4 0
+ */
+
+
+
+
+
+
